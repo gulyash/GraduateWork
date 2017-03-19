@@ -11,26 +11,29 @@
     tools:context="com.example.gulnara.graduatework.GuestNumberActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сколько вас?"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/numberPicker"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView" />
+        android:text="Сколько вас?"
+        style="@style/Base.TextAppearance.AppCompat.Large" />
 
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/numberPicker"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
 
     <Button
-        android:text="Button"
+        android:text="ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button"
+        android:onClick="onAcceptGuestNumberClick"
         android:layout_below="@+id/numberPicker"
         android:layout_centerHorizontal="true"
-        android:onClick="onAcceptGuestNumberClick" />
+        />
 </RelativeLayout>
