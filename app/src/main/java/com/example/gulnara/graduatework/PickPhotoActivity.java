@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,6 +40,7 @@ public class PickPhotoActivity extends AppCompatActivity {
     public static final String FORWARD_SLASH = "/";
     String mCurrentPhotoPath;
     private Context activityContext;
+    Bitmap bitmap;
 
 
     @Override
@@ -88,9 +91,6 @@ public class PickPhotoActivity extends AppCompatActivity {
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, TAKE_PHOTO_BY_CAMERA);
                     }
-
-
-                    //startActivityForResult(takePictureIntent, TAKE_PHOTO_BY_CAMERA);
                 }
             }
         });
@@ -111,7 +111,6 @@ public class PickPhotoActivity extends AppCompatActivity {
         if (requestCode == PICK_PHOTO_FROM_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
 
             Uri selectedImageUri = data.getData();
-            Toast.makeText(this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
             RequestListener<Uri, GlideDrawable> requestListener = new RequestListener<Uri, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -123,20 +122,19 @@ public class PickPhotoActivity extends AppCompatActivity {
                     return false;
                 }
             };
-            Glide.with(this)
-                    .load(selectedImageUri)
-                    .placeholder(R.color.colorAccent)
-                    .centerCrop()
-                    .listener(requestListener)
-                    .into(imageView);
+
+            try {
+                bitmap = getBitmapFromUri(selectedImageUri);
+                imageView.setImageBitmap(bitmap);
+            }
+            catch (IOException e){
+                Toast.makeText(this, "IOEXCEPTION", Toast.LENGTH_LONG).show();
+            }
         }
 
         if (requestCode == TAKE_PHOTO_BY_CAMERA && resultCode == RESULT_OK) {
             galleryAddPic();
             setPic();
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            imageView.setImageBitmap(imageBitmap);
         }
 
     }
@@ -185,12 +183,22 @@ public class PickPhotoActivity extends AppCompatActivity {
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         imageView.setImageBitmap(bitmap);
     }
 
     private static Uri resourceIdToUri(Context context, int resourceId) {
         return Uri.parse(ANDROID_RESOURCE + context.getPackageName() + FORWARD_SLASH + resourceId);
     }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
 }
 
