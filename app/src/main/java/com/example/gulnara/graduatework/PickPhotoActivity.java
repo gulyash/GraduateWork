@@ -3,6 +3,7 @@ package com.example.gulnara.graduatework;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,24 +13,24 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.R.attr.tag;
 
 public class PickPhotoActivity extends AppCompatActivity {
 
@@ -39,8 +40,8 @@ public class PickPhotoActivity extends AppCompatActivity {
     public static final String ANDROID_RESOURCE = "android.resource://";
     public static final String FORWARD_SLASH = "/";
     String mCurrentPhotoPath;
-    private Context activityContext;
     Bitmap bitmap;
+    TextRecognizer textRecognizer;
 
 
     @Override
@@ -48,15 +49,17 @@ public class PickPhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_photo);
 
-        activityContext = this;
+        textRecognizer = new TextRecognizer(this);
         imageView = (ImageView) findViewById(R.id.imageView);
 
+        //PLACEHOLDER PICTURE
         Uri uri = resourceIdToUri(this, R.drawable.sad);
         Glide.with(this)
                 .load(uri)
                 .placeholder(R.color.colorAccent)
                 .into(imageView);
 
+        //GALLERY BUTTON
         Button galleryButton = (Button) findViewById(R.id.galleryButton);
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,21 +70,18 @@ public class PickPhotoActivity extends AppCompatActivity {
             }
         });
 
+        //CAMERA BUTTON
         Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-
-                    // Create the File where the photo should go
                     File photoFile = null;
                     try {
                         photoFile = createImageFile();
                     } catch (IOException ex) {
                         // Error occurred while creating the File
-                        Toast.makeText(v.getContext(), "failed to create file", Toast.LENGTH_LONG).show();
                     }
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
@@ -95,11 +95,19 @@ public class PickPhotoActivity extends AppCompatActivity {
             }
         });
 
+        //RECOGNITION BUTTON
         Button nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO RECOGNITION STUFF HERE AND START NEW ACTIVITY YOU KNOW
+                //TODO move recognition to another thread
+                String result = textRecognizer.processImage(bitmap);
+                //TextView testTextView = (TextView)findViewById(R.id.testTextView);
+                //testTextView.setText(result);
+
+                Intent intent = new Intent(v.getContext(), BillEditorActivity.class);
+                intent.putExtra("recognized",result);
+                startActivity(intent);
             }
         });
     }
@@ -111,18 +119,6 @@ public class PickPhotoActivity extends AppCompatActivity {
         if (requestCode == PICK_PHOTO_FROM_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
 
             Uri selectedImageUri = data.getData();
-            RequestListener<Uri, GlideDrawable> requestListener = new RequestListener<Uri, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    return false;
-                }
-            };
-
             try {
                 bitmap = getBitmapFromUri(selectedImageUri);
                 imageView.setImageBitmap(bitmap);

@@ -34,7 +34,10 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".BillEditorActivity"></activity>
+        <activity
+            android:name=".BillEditorActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".GuestChoiceActivity"/>
     </application>
 
 </manifest>
