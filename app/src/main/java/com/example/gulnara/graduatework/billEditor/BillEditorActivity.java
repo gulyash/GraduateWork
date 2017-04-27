@@ -1,9 +1,7 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.billEditor;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,13 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.gulnara.graduatework.Dish;
+import com.example.gulnara.graduatework.GuestChoiceActivity;
+import com.example.gulnara.graduatework.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BillEditorActivity extends AppCompatActivity implements BillItemDialogFragment.BillItemDialogListener, NewDishDialogFragment.NewDishDialogListener{
+    int guestNum;
     ArrayList<Dish> bill;
     BillEditorAdapter billEditorAdapter;
 
@@ -34,11 +34,10 @@ public class BillEditorActivity extends AppCompatActivity implements BillItemDia
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            guestNum = extras.getInt("guest num");
             String recognized = extras.getString("recognized");
             BillParser billParser = new BillParser();
             bill = billParser.parse(recognized);
-            //String result = "placeholder";
-            //recognizedTextView.setText(result);
         }
 
 
@@ -69,7 +68,10 @@ public class BillEditorActivity extends AppCompatActivity implements BillItemDia
     }
 
     public void onNextButtonClick(MenuItem item) {
-        Toast.makeText(this, "you clicked next button", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, GuestChoiceActivity.class);
+        intent.putExtra("guest num", guestNum);
+        intent.putParcelableArrayListExtra("bill", bill);
+        startActivity(intent);
     }
 
     public void onAddButtonClick(View view) {

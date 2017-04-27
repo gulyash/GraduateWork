@@ -1,4 +1,4 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.pickPhoto;
 
 import android.content.Context;
 import android.content.res.AssetManager;

@@ -1,4 +1,4 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.billEditor;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.gulnara.graduatework.Dish;
+import com.example.gulnara.graduatework.R;
 
 import java.util.ArrayList;
 
@@ -47,7 +50,6 @@ public class BillEditorAdapter extends BaseAdapter {
         Dish dish = bill.get(i);
 
         // заполняем View в пункте списка данными из товаров: наименование, цена
-        // и картинка
         ((TextView) v.findViewById(R.id.dish_name)).setText(dish.name);
         ((TextView) v.findViewById(R.id.dish_price)).setText(dish.price + " р.");
         ((TextView) v.findViewById(R.id.dish_quantity)).setText("x" + dish.quantity);

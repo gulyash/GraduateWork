@@ -1,9 +1,8 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.pickPhoto;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,19 +15,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.googlecode.tesseract.android.TessBaseAPI;
+import com.example.gulnara.graduatework.R;
+import com.example.gulnara.graduatework.billEditor.BillEditorActivity;
 
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,10 +38,16 @@ public class PickPhotoActivity extends AppCompatActivity {
     Bitmap bitmap;
     TextRecognizer textRecognizer;
 
-
+    int guestNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            guestNum = extras.getInt("guest num", 2);
+        }
+
         setContentView(R.layout.activity_pick_photo);
 
         textRecognizer = new TextRecognizer(this);
@@ -107,6 +108,7 @@ public class PickPhotoActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(v.getContext(), BillEditorActivity.class);
                 intent.putExtra("recognized",result);
+                intent.putExtra("guest num", guestNum);
                 startActivity(intent);
             }
         });

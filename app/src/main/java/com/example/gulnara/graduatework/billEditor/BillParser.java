@@ -1,6 +1,8 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.billEditor;
 
 import android.widget.Toast;
+
+import com.example.gulnara.graduatework.Dish;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -24,28 +26,30 @@ public class BillParser {
         String[] array = result.split("[\n]");
 
         ArrayList<Dish> bill = new ArrayList<>();
-        //String buffer="";
         for (String s:array) {
-            //groups:                    //1  //2      //3                 //6
-            Pattern p = Pattern.compile("(.+ )(\\d{2,})(((\\.|,|-)\\d{2})?)(( (руб|руб\\.|РУБ|Руб\\.))?)");
+            //groups:                    //1  //2      //3,4     //5       //6
+            Pattern p = Pattern.compile("(.+ )(\\d{2,})((\\.|,|-)(\\d{2}))?(( (руб|руб\\.|РУБ|Руб\\.))?)((с|С|в|В)?)");
             Matcher m = p.matcher(s);
             if (m.matches()) {
-
-                int price = Integer.parseInt(m.group(2));
-
-                //buffer += s + "-"+price + "-" + m.group(3) + "-"+m.group(6)+ "\n";
-
+                int price = parseInt(m.group(5));
+                price+=100*parseInt(m.group(2));
                 //group a - is the name
                 //group b - is the price
                 Dish dish = new Dish(m.group(1), price, 1);
                 bill.add(dish);
-
             }
         }
-        //result = buffer;
-
 
         return bill;
+    }
+
+    private int parseInt(String s){
+        try{
+            return Integer.parseInt(s);
+        }
+        catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
 }

@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PickPhotoActivity" />
+        <activity android:name=".pickPhoto.PickPhotoActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -35,7 +35,7 @@
         </provider>
 
         <activity
-            android:name=".BillEditorActivity"
+            android:name=".billEditor.BillEditorActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".GuestChoiceActivity"/>
     </application>
