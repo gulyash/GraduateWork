@@ -1,8 +1,6 @@
 package com.example.gulnara.graduatework.billEditor;
 
-import android.widget.Toast;
-
-import com.example.gulnara.graduatework.Dish;
+import com.example.gulnara.graduatework.model.Dish;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

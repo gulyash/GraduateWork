@@ -4,14 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:theme="@style/ToolBarStyle" />
+
     <TextView
         android:id="@+id/userChoiceTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Выбор пользователя:"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/my_toolbar"  />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_list_recycler_view"

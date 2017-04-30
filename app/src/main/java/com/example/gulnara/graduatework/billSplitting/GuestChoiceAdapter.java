@@ -1,4 +1,4 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.billSplitting;
 
 import android.content.Context;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.gulnara.graduatework.model.Dish;
+import com.example.gulnara.graduatework.R;
+import com.example.gulnara.graduatework.model.User;
+
 import java.util.ArrayList;
 
 /**
@@ -19,13 +23,17 @@ import java.util.ArrayList;
 public class GuestChoiceAdapter extends BaseAdapter{
     ArrayList<Dish> dishes;
     ArrayList<User> users;
+    ArrayList<ArrayList<Boolean>> checked;
     LayoutInflater layoutInflater;
 
-    public GuestChoiceAdapter(Context context, ArrayList<Dish> d, ArrayList<User> u){
+    public GuestChoiceAdapter(Context context, ArrayList<Dish> d, ArrayList<User> u, ArrayList<ArrayList<Boolean>> c){
         dishes = d;
         users = u;
+        checked = c;
+
         layoutInflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return dishes.size();
@@ -50,18 +58,14 @@ public class GuestChoiceAdapter extends BaseAdapter{
         }
 
         Dish dish = dishes.get(i);
-
         ((TextView) v.findViewById(R.id.dish_name)).setText(dish.name);
         ((TextView) v.findViewById(R.id.dish_price)).setText(dish.price + " р.");
 
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
-
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        UserListRecyclerViewAdapter mRvAdapter= new UserListRecyclerViewAdapter(v.getContext(), users);
+        UserListRecyclerViewAdapter mRvAdapter= new UserListRecyclerViewAdapter(users, dish, checked, i);
         recyclerView.setAdapter(mRvAdapter);
 
         return v;

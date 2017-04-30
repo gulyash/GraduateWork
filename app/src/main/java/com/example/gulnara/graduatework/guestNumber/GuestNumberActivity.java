@@ -1,4 +1,4 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.guestNumber;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
 
+import com.example.gulnara.graduatework.R;
 import com.example.gulnara.graduatework.pickPhoto.PickPhotoActivity;
 
 public class GuestNumberActivity extends AppCompatActivity {
@@ -21,7 +22,6 @@ public class GuestNumberActivity extends AppCompatActivity {
         numberPicker.setMaxValue(12);
         numberPicker.setWrapSelectorWheel(false);
     }
-
 
     public void onAcceptGuestNumberClick(View view) {
         Intent intent = new Intent(this, PickPhotoActivity.class);

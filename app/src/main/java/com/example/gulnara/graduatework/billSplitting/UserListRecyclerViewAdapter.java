@@ -1,6 +1,5 @@
-package com.example.gulnara.graduatework;
+package com.example.gulnara.graduatework.billSplitting;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -10,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.gulnara.graduatework.model.Dish;
+import com.example.gulnara.graduatework.R;
+import com.example.gulnara.graduatework.model.User;
 
 import java.util.ArrayList;
 
@@ -20,10 +22,23 @@ import java.util.ArrayList;
 
 public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRecyclerViewAdapter.UserViewHolder> {
     ArrayList<User> users;
-    int chosenUserPosition;
+    ArrayList<ArrayList<Boolean>> checked;
+    int dishNum;
+    int count;
+    Dish dish;
 
-    public UserListRecyclerViewAdapter(Context context, ArrayList<User> u){
+    public UserListRecyclerViewAdapter(ArrayList<User> u, Dish d, ArrayList<ArrayList<Boolean>> c, int dn) {
         users = u;
+        dish = d;
+        checked = c;
+        dishNum = dn;
+
+        count=0;
+        for (Boolean b : checked.get(dishNum) ) {
+            if (b) {
+                count++;
+            }
+        }
     }
 
     @Override
@@ -32,7 +47,7 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
         UserListRecyclerViewAdapter.UserViewHolder vh = new UserViewHolder(itemView, new UserListRecyclerViewAdapter.UserViewHolder.IUserViewHolderListener() {
             @Override
             public void onItemClick(View caller, int position) {
-                chosenUserPosition = position;
+                recountSums(position);
                 notifyDataSetChanged();
             }
         });
@@ -42,8 +57,8 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         User user = users.get(position);
-        holder.name.setText(user.name);
-        if (position==chosenUserPosition){
+        holder.name.setText(user.name + " " + user.sum);
+        if (checked.get(dishNum).get(position)){
             holder.pic.setImageResource(R.drawable.ic_active_user);
         }
         else{
@@ -58,18 +73,18 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
         return users.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView name;
         ImageView pic;
         TypedArray ta;
         IUserViewHolderListener mListener;
-        public int clickedPosition;
+        int clickedPosition;
 
-        public interface IUserViewHolderListener {
+        interface IUserViewHolderListener {
             public void onItemClick(View caller, int position);
         }
 
-        public UserViewHolder(View itemView, IUserViewHolderListener listener) {
+        UserViewHolder(View itemView, IUserViewHolderListener listener) {
             super(itemView);
             mListener = listener;
             name = (TextView)itemView.findViewById(R.id.user_name);
@@ -85,6 +100,28 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
         }
     }
 
+    void recountSums(int position) {
 
+        for (int i=0; i<checked.size(); i++) {
+            if (checked.get(dishNum).get(i)) {
+                users.get(i).sum-=dish.price/count;
+            }
+        }
+        if (checked.get(dishNum).get(position)){
+            checked.get(dishNum).set(position, false);
+            count--;
+        }
+        else{
+            checked.get(dishNum).set(position, true);
+            count++;
+        }
+        if (count!=0) {
+            for (int i = 0; i < checked.size(); i++) {
+                if (checked.get(dishNum).get(i)) {
+                    users.get(i).sum += dish.price / count;
+                }
+            }
+        }
+    }
 
 }

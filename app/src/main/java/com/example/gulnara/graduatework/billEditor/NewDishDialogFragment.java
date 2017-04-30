@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.gulnara.graduatework.Dish;
+import com.example.gulnara.graduatework.model.Dish;
 import com.example.gulnara.graduatework.R;
 
 /**

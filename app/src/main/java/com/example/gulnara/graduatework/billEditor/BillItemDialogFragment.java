@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.gulnara.graduatework.Dish;
+import com.example.gulnara.graduatework.model.Dish;
 import com.example.gulnara.graduatework.R;
 
 /**

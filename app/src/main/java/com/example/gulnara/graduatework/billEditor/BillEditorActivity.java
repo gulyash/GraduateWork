@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.gulnara.graduatework.Dish;
-import com.example.gulnara.graduatework.GuestChoiceActivity;
+import com.example.gulnara.graduatework.model.Dish;
+import com.example.gulnara.graduatework.billSplitting.GuestChoiceActivity;
 import com.example.gulnara.graduatework.R;
 
 import java.util.ArrayList;
@@ -30,7 +30,6 @@ public class BillEditorActivity extends AppCompatActivity implements BillItemDia
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        //TextView recognizedTextView = (TextView)findViewById(R.id.recognizedText);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -39,8 +38,6 @@ public class BillEditorActivity extends AppCompatActivity implements BillItemDia
             BillParser billParser = new BillParser();
             bill = billParser.parse(recognized);
         }
-
-
 
         final ListView billList = (ListView)findViewById(R.id.list);
         billEditorAdapter = new BillEditorAdapter(this, bill);
@@ -61,6 +58,7 @@ public class BillEditorActivity extends AppCompatActivity implements BillItemDia
         });
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.bill_editor_menu, menu);
