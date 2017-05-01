@@ -57,12 +57,12 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         User user = users.get(position);
-        holder.name.setText(user.name + " " + user.sum);
+        holder.name.setText(user.name);
         if (checked.get(dishNum).get(position)){
-            holder.pic.setImageResource(R.drawable.ic_active_user);
+            holder.pic.setImageResource(R.drawable.ic_plus);
         }
         else{
-            holder.pic.setImageResource(R.drawable.ic_inactive_user);
+            holder.pic.setImageResource(R.drawable.ic_minus);
         }
         int colorToUse = holder.ta.getResourceId(position, R.color.colorPrimary);
         DrawableCompat.setTint(holder.pic.getDrawable(), ContextCompat.getColor(holder.pic.getContext(), colorToUse));
@@ -100,28 +100,43 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
         }
     }
 
-    void recountSums(int position) {
+    void recountSums(int userNum) {
 
-        for (int i=0; i<checked.size(); i++) {
-            if (checked.get(dishNum).get(i)) {
-                users.get(i).sum-=dish.price/count;
+        if (checked.get(dishNum).get(userNum)) {
+            //вычитаем
+            for (int j = 0; j < users.size(); j++) {
+                if (checked.get(dishNum).get(j)) {
+                    users.get(j).sum -= (dish.price) / count;
+                }
+            }
+            count--;
+            checked.get(dishNum).set(userNum, false);
+
+            if (count!=0) {
+                for (int j = 0; j < users.size(); j++) {
+                    if (checked.get(dishNum).get(j)) {
+                        users.get(j).sum += (dish.price) / count;
+                    }
+                }
             }
         }
-        if (checked.get(dishNum).get(position)){
-            checked.get(dishNum).set(position, false);
-            count--;
-        }
-        else{
-            checked.get(dishNum).set(position, true);
+        else {
+            //складываем
+            if (count!=0) {
+                for (int j = 0; j < users.size(); j++) {
+                    if (checked.get(dishNum).get(j)) {
+                        users.get(j).sum -= (dish.price) / count;
+                    }
+                }
+            }
             count++;
-        }
-        if (count!=0) {
-            for (int i = 0; i < checked.size(); i++) {
-                if (checked.get(dishNum).get(i)) {
-                    users.get(i).sum += dish.price / count;
+            checked.get(dishNum).set(userNum, true);
+
+            for (int j = 0; j < users.size(); j++) {
+                if (checked.get(dishNum).get(j)) {
+                    users.get(j).sum += (dish.price) / count;
                 }
             }
         }
     }
-
 }

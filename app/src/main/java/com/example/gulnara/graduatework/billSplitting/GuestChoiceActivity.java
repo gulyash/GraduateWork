@@ -33,6 +33,7 @@ public class GuestChoiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_choice);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("Разделите чек");
         setSupportActionBar(myToolbar);
 
         Bundle extras = getIntent().getExtras();

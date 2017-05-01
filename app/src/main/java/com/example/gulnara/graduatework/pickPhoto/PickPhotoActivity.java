@@ -12,6 +12,10 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.gulnara.graduatework.R;
 import com.example.gulnara.graduatework.billEditor.BillEditorActivity;
+import com.example.gulnara.graduatework.results.ResultsActivity;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -37,23 +42,26 @@ public class PickPhotoActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     Bitmap bitmap;
     TextRecognizer textRecognizer;
+    String result;
 
     int guestNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pick_photo);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             guestNum = extras.getInt("guest num", 2);
         }
 
-        setContentView(R.layout.activity_pick_photo);
-
         textRecognizer = new TextRecognizer(this);
         imageView = (ImageView) findViewById(R.id.imageView);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("Ваш чек");
+        setSupportActionBar(myToolbar);
 
-        //PLACEHOLDER PICTURE
+        //todo bitmap PLACEHOLDER PICTURE instead glide
         Uri uri = resourceIdToUri(this, R.drawable.sad);
         Glide.with(this)
                 .load(uri)
@@ -95,23 +103,6 @@ public class PickPhotoActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //RECOGNITION BUTTON
-        Button nextButton = (Button) findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO move recognition to another thread
-                String result = textRecognizer.processImage(bitmap);
-                //TextView testTextView = (TextView)findViewById(R.id.testTextView);
-                //testTextView.setText(result);
-
-                Intent intent = new Intent(v.getContext(), BillEditorActivity.class);
-                intent.putExtra("recognized",result);
-                intent.putExtra("guest num", guestNum);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -124,6 +115,9 @@ public class PickPhotoActivity extends AppCompatActivity {
             try {
                 bitmap = getBitmapFromUri(selectedImageUri);
                 imageView.setImageBitmap(bitmap);
+                //TODO move recognition to another thread
+                result  = textRecognizer.processImage(bitmap);
+
             }
             catch (IOException e){
                 Toast.makeText(this, "IOEXCEPTION", Toast.LENGTH_LONG).show();
@@ -133,8 +127,10 @@ public class PickPhotoActivity extends AppCompatActivity {
         if (requestCode == TAKE_PHOTO_BY_CAMERA && resultCode == RESULT_OK) {
             galleryAddPic();
             setPic();
-        }
+            //TODO move recognition to another thread
+            result  = textRecognizer.processImage(bitmap);
 
+        }
     }
 
     private File createImageFile() throws IOException {
@@ -196,6 +192,21 @@ public class PickPhotoActivity extends AppCompatActivity {
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.bill_editor_menu, menu);
+        return true;
+    }
+
+    public void onNextButtonClick(MenuItem item) {
+
+        Intent intent = new Intent(this, BillEditorActivity.class);
+        intent.putExtra("recognized",result);
+        intent.putExtra("guest num", guestNum);
+        startActivity(intent);
     }
 
 }

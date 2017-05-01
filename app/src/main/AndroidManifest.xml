@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".pickPhoto.PickPhotoActivity" />
+        <activity
+            android:name=".pickPhoto.PickPhotoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

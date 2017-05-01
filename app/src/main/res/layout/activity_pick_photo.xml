@@ -2,51 +2,59 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:theme="@style/ToolBarStyle" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:src="@drawable/sad"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonContainer"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/buttonContainer" />
+        android:layout_below="@+id/my_toolbar"
+        android:src="@drawable/sad" />
 
     <LinearLayout
         android:id="@+id/buttonContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_above="@+id/nextButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
+
         <Button
-            android:text="галерея"
+            android:id="@+id/galleryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/galleryButton" />
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/ic_gallery_black_24dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="14dp"
+            android:text="галерея" />
 
         <Button
             android:id="@+id/cameraButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/galleryButton"
-            android:layout_alignStart="@+id/galleryButton"
-            android:layout_below="@+id/galleryButton"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/ic_camera_black_24dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="14dp"
             android:text="камера" />
     </LinearLayout>
-    <Button
-        android:text="готово"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/nextButton"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

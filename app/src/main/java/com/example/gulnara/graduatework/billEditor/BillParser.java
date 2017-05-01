@@ -26,7 +26,7 @@ public class BillParser {
         ArrayList<Dish> bill = new ArrayList<>();
         for (String s:array) {
             //groups:                    //1  //2      //3,4     //5       //6
-            Pattern p = Pattern.compile("(.+ )(\\d{2,})((\\.|,|-)(\\d{2}))?(( (руб|руб\\.|РУБ|Руб\\.))?)((с|С|в|В)?)");
+            Pattern p = Pattern.compile("(.+ |=)(\\d{2,})((\\.|,|-)(\\d{2}))?(( (руб|руб\\.|РУБ|Руб\\.))?)((с|С|в|В)?)");
             Matcher m = p.matcher(s);
             if (m.matches()) {
                 int price = parseInt(m.group(5));

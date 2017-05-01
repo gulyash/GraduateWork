@@ -9,7 +9,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/linearLayout"
         android:text="DishName"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/frameLayout"
             android:layout_gravity="right"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
             android:text="DishPrice"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="right"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="10dp"
             android:text="DishAmount"
             android:textAppearance="?android:attr/textAppearanceSmall" />

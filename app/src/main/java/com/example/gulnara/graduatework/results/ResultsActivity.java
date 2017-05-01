@@ -3,16 +3,18 @@ package com.example.gulnara.graduatework.results;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.gulnara.graduatework.R;
+import com.example.gulnara.graduatework.model.Dish;
 import com.example.gulnara.graduatework.model.User;
 
 import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
     ArrayList<User> users;
-    ArrayList<User> dishes;
+    ArrayList<Dish> dishes;
     ArrayList<ArrayList<Integer>> selectedDishes;
 
     @Override
@@ -30,6 +32,8 @@ public class ResultsActivity extends AppCompatActivity {
             selectedDishes.add(extra);
         }
 
-
+        ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.expandable_list_view);
+        ResultsAdapter resultsAdapter = new ResultsAdapter(users, dishes, selectedDishes);
+        expandableListView.setAdapter(resultsAdapter);
     }
 }
