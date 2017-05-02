@@ -17,7 +17,8 @@
         android:layout_toLeftOf="@+id/dish_price"
         android:layout_toStartOf="@+id/dish_price"
         android:text="TextView"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="?android:attr/textColorSecondary" />
 
     <TextView
         android:id="@+id/dish_price"
@@ -28,7 +29,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
         android:text="TextView"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="?android:attr/textColorSecondary" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

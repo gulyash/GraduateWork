@@ -72,8 +72,17 @@ public class ResultsAdapter extends BaseExpandableListAdapter {
             view = layoutInflater.inflate(R.layout.result_group_view, null);
         }
 
+        if (b) {
+            view.setBackgroundColor(view.getContext().getResources().getColor(R.color.palePeach));
+        }
+        else {
+            view.setBackgroundColor(0xFFFFFFF);
+        }
         TextView userText = (TextView)view.findViewById(R.id.user_name);
         userText.setText(users.get(i).name);
+
+        TextView sumText = (TextView)view.findViewById(R.id.user_sum);
+        sumText.setText("" + users.get(i).sum + " р.");
 
         return view;
     }

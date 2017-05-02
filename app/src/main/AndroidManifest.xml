@@ -42,7 +42,9 @@
         <activity
             android:name=".billSplitting.GuestChoiceActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".results.ResultsActivity"></activity>
+        <activity
+            android:name=".results.ResultsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" ></activity>
     </application>
 
 </manifest>

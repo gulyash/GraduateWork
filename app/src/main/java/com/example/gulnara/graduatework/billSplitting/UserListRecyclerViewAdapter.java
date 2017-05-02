@@ -59,10 +59,10 @@ public class UserListRecyclerViewAdapter extends RecyclerView.Adapter<UserListRe
         User user = users.get(position);
         holder.name.setText(user.name);
         if (checked.get(dishNum).get(position)){
-            holder.pic.setImageResource(R.drawable.ic_plus);
+            holder.pic.setImageResource(R.drawable.ic_checked);
         }
         else{
-            holder.pic.setImageResource(R.drawable.ic_minus);
+            holder.pic.setImageResource(R.drawable.ic_unchecked);
         }
         int colorToUse = holder.ta.getResourceId(position, R.color.colorPrimary);
         DrawableCompat.setTint(holder.pic.getDrawable(), ContextCompat.getColor(holder.pic.getContext(), colorToUse));

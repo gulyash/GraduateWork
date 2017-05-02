@@ -71,7 +71,7 @@ public class GuestChoiceActivity extends AppCompatActivity {
         dishes = new ArrayList<>();
         for (Dish dish : bill) {
             for (int i=0; i<dish.quantity; i++) {
-                dishes.add(new Dish(dish.name + (i==0 ? " ":i), dish.price, 1));
+                dishes.add(new Dish(dish.name + (i==0 ? "":" (" + (i+1) +")"), dish.price, 1));
             }
         }
     }
